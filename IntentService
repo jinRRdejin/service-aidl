@@ -1,0 +1,32 @@
+IntentService
+advantage ：IntentService也是开启线程，继承service，所以根据Android系统Kill Application的机制，
+使用IntentService的应用的优先级更高一点。通俗点说如果使用IntentService做后台任务时，当您的程序退到后台时，被杀死的几率会更低一点。
+
+既然IntentService是在Service里开启线程去做任务处理，那我直接在Service里启动线程去做不就好了吗？当然可以，但是IntentService已经帮您封装好了，为什么还要自己再去实现IntentService的一套逻辑呢？
+IntentService会在任务执行完成后自行结束自己，而不需要外部去调用stopService了
+
+我们知道Service可以通过startService和bindService这两种方式启动。当然喽，IntentService是继承自Service的，自然也是可以通过上面两种方式启动。
+但是呢，是不建议使用 bindService 去启动的，因为bindService 不回调onStart方法，而IntentService中封装的Handle是在OnStart中sendMessage的。
+因为只有handleMessage方法调用后才会调用onHandleIntent方法去处理任务
+
+  // upload data by start intentservice
+     Intent serviceIntent = new Intent(context, YourUploadService.class);
+     context.startService(serviceIntent);
+     
+     
+     
+ public class YourUploadService extends IntentService {
+     public YourUploadService() {
+         super("YourUploadService");
+     }
+ 
+     @Override
+     protected void onHandleIntent(Intent intent) {
+         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = manager.getActiveNetworkInfo();
+        if (info != null) {
+            // TODO do your upload logic            }
+        }
+    }
+
+
