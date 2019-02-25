@@ -1,0 +1,16 @@
+
+HandlerThread对象start后可以获得其Looper对象，并且使用这个Looper对象实例Handler，之后Handler就可以运行在其他线程中了。
+
+①Handler是Android消息机制的上层接口，通过它可以轻松地将一个任务切换到Handler所在的线程中去执行，该线程既可以是主线程，
+也可以是子线程，要看构造Handler时使用的构造方法中传入的Looper位于哪里；
+
+②Handler的运行需要底层的MessageQueue和Looper的支撑，Handler创建的时候会采用当前线程的Looper来构造消息循环系统，
+而线程默认是没有Looper的，如果需要使用Handler就必须为线程创建Looper；
+
+1)Looper:  一个线程可以产生一个 Looper 对象，由它来管理此线程里的 MessageQueue( 消息队列 ) 和对消息进行循环。 
+
+2)Handler:  你可以构造 Handler 对象来与 Looper 沟通，以便 push 新消息到 MessageQueue 里 ; 或者接收 Looper 从 Message Queue 取出 所送来的消息。 
+
+3) Message Queue( 消息队列 ): 用来存放线程放入的消息。 
+
+4) Message：是线程间通讯的消息载体。两个码头之间运输货物，Message充当集装箱的功能，里面可以存放任何你想传递的消息
